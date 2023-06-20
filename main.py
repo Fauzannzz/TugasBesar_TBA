@@ -10,7 +10,7 @@ print("Token-token hasil analisis leksikal:")
 print(token_string)
 print()
 
-result = parser(token_string)
+hasil_parsing = parser(input_string)
 
 print("Hasil parsing:")
-print(result)
+print(hasil_parsing)
