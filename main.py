@@ -4,7 +4,7 @@ from parse import parser
 input_string = input("Masukkan string input: ")
 
 """
-contoh input valid :
+contoh input valid : if <variabel> <operator> <variabel> : <aksi>
 
 if b > c : a = b + c
 if B < A : C = A % B
