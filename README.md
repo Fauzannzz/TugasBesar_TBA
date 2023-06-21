@@ -1,7 +1,7 @@
 # Tugas Besar - TEORI BAHASA DAN AUTOMATA
 
 ## Langkah Penggunaan Program
-- Download ZIP Code dari link source code di lampiran
+- Download ZIP Code
 - Dapat diekstrak terlebih dahulu (opsional)
 - Buka terminal / IDE
 - Pada IDE seperti VS Code, jalankan langsung program main.py
