@@ -1,14 +1,10 @@
 import string
-
-"""
-valid input example :
-
-if b > c : a = b * c
-"""
+import re
+import time
 
 #initialization
 def lexical_analyzer(input_string):
-    alphabet_list = list(string.ascii_lowercase)
+    alphabet_list = re.findall(r'(\w+|[<>=+*/-]+|:)',input_string)
     state_list = ['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12']
 
     transition_table = {}
@@ -31,14 +27,13 @@ def lexical_analyzer(input_string):
     transition_table[('q2', 'c')] = 'q3'
 
     transition_table[('q3', ' ')] = 'q3'
-    transition_table[('q3', '==')] = 'q4'
-    transition_table[('q3', '!=')] = 'q4'
+    transition_table[('q3', '!')] = 'q4'
+    transition_table[('q3', '=')] = 'q4'
     transition_table[('q3', '>')] = 'q4'
     transition_table[('q3', '<')] = 'q4'
-    transition_table[('q3', '>=')] = 'q4'
-    transition_table[('q3', '<=')] = 'q4'
 
     transition_table[('q4', ' ')] = 'q4'
+    transition_table[('q4', '=')] = 'q4'
     transition_table[('q4', 'a')] = 'q5'
     transition_table[('q4', 'b')] = 'q5'
     transition_table[('q4', 'c')] = 'q5'
@@ -65,7 +60,6 @@ def lexical_analyzer(input_string):
     transition_table[('q9', '/')] = 'q10'
     transition_table[('q9', '*')] = 'q10'
     transition_table[('q9', '%')] = 'q10'
-    transition_table[('q9', '**')] = 'q10'
 
     transition_table[('q10', ' ')] = 'q10'
     transition_table[('q10', 'a')] = 'q11'
@@ -79,25 +73,30 @@ def lexical_analyzer(input_string):
     transition_table[('q12', '#')] = 'accept'
 
     #Lexical Analysis
+    i = 0
     idx_char = 0
     state = 'q0'
     current_token = ''
     result = None  # Inisialisasi result dengan None
     for current_char in (input_string.lower()+'#'):
+        time.sleep(0.5)
         current_token += current_char
         state = transition_table[(state, current_char)]
+        if len(current_token) > 1:
+            print("Token valid: ", current_token[i], )
+            i += 1
         if state == 'q11':
             print('Current token: ', current_token, ', VALID')
             current_token = ''
         if state == 'error':
-            print('Current token: ', current_token, ', ERROR')
+            print('Token error: ', current_token[i])
             break
         idx_char = idx_char + 1
 
     #Conclusion
     if state == 'accept':
-        result = input_string
+        result = '----------------------\nSEMUA TOKEN VALID\n----------------------'
     else:
-        result = input_string
+        result = '----------------------------\nADA TOKEN YANG TIDAK VALID\n----------------------------'
 
     return result
