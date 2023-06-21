@@ -3,14 +3,19 @@ from parse import parser
 
 input_string = input("Masukkan string input: ")
 
-tokens = lexical_analyzer(input_string)
-token_string = ' '.join(tokens)
+"""
+contoh input valid :
 
-print("Token-token hasil analisis leksikal:")
-print(token_string)
-print()
+if b > c : a = b + c
+if B < A : C = A % B
+if c == a : b = c / a
 
-hasil_parsing = parser(input_string)
+"""
 
-print("Hasil parsing:")
-print(hasil_parsing)
+print('============================== LEXICAL ANALYZER PROGRAM ==============================\n')
+res_tokens = lexical_analyzer(input_string)
+print(res_tokens, "\n")
+
+print('============================== PARSE PROGRAM ==============================\n')
+res_parsing = parser(input_string)
+print("HASIL: ", res_parsing)
