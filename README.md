@@ -1,4 +1,4 @@
-# TugasBesar-TBA
+# Tugas Besar - TEORI BAHASA DAN AUTOMATA
 
 ## Langkah Penggunaan Program
 - Download ZIP Code dari link source code di lampiran
