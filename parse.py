@@ -1,9 +1,10 @@
+import time
 def parser(input_string):
     tokens = input_string.lower().split()
     tokens.append("EOS")
 
     non_terminals = ['statement', 'kondisi', 'aksi', 'variabel', 'operator', 'hitungan']
-    terminals = ['if', ':', 'a', 'b', 'c',  '==', '!=' , '>', '<',  '>=', '<=', '+', '-', '*', '/', '%', '**', '=']
+    terminals = ['if', ':', 'a', 'b', 'c',  '==', '!=' , '>', '<',  '>=', '<=', '+', '-', '*', '/', '%', '=']
 
     parse_table = {}
 
@@ -23,7 +24,6 @@ def parser(input_string):
     parse_table[('statement', '/')] = ['error']
     parse_table[('statement', '*')] = ['error']
     parse_table[('statement', '%')] = ['error']
-    parse_table[('statement', '**')] = ['error']
     parse_table[('statement', '=')] = ['error']
     parse_table[('statement', 'EOS')] = ['error']
 
@@ -43,7 +43,6 @@ def parser(input_string):
     parse_table[('kondisi', '/')] = ['error']
     parse_table[('kondisi', '*')] = ['error']
     parse_table[('kondisi', '%')] = ['error']
-    parse_table[('kondisi', '**')] = ['error']
     parse_table[('kondisi', '=')] = ['error']
     parse_table[('kondisi', 'EOS')] = ['error']
 
@@ -63,7 +62,6 @@ def parser(input_string):
     parse_table[('aksi', '/')] = ['error']
     parse_table[('aksi', '*')] = ['error']
     parse_table[('aksi', '%')] = ['error']
-    parse_table[('aksi', '**')] = ['error']
     parse_table[('aksi', '=')] = ['error']
     parse_table[('aksi', 'EOS')] = ['error']
 
@@ -83,7 +81,6 @@ def parser(input_string):
     parse_table[('variabel', '/')] = ['error']
     parse_table[('variabel', '*')] = ['error']
     parse_table[('variabel', '%')] = ['error']
-    parse_table[('variabel', '**')] = ['error']
     parse_table[('variabel', '=')] = ['error']
     parse_table[('variabel', 'EOS')] = ['error']
 
@@ -103,7 +100,6 @@ def parser(input_string):
     parse_table[('operator', '/')] = ['error']
     parse_table[('operator', '*')] = ['error']
     parse_table[('operator', '%')] = ['error']
-    parse_table[('operator', '**')] = ['error']
     parse_table[('operator', '=')] = ['error']
     parse_table[('operator', 'EOS')] = ['error']
 
@@ -123,7 +119,6 @@ def parser(input_string):
     parse_table[('hitungan', '/')] = ['/']
     parse_table[('hitungan', '*')] = ['*']
     parse_table[('hitungan', '%')] = ['%']
-    parse_table[('hitungan', '**')] = ['**']
     parse_table[('hitungan', '=')] = ['error']
     parse_table[('hitungan', 'EOS')] = ['error']
 
@@ -132,28 +127,34 @@ def parser(input_string):
     symbol = tokens[index_token]
 
     while len(stack) > 0:
+        time.sleep(0.5)
         top = stack[len(stack) - 1]
         print('TOP    =', top)
         print('SYMBOL =', symbol)
-        if top in terminals:
-            print('TOP ADALAH SYMBOL TERMINAL')
-            if top == symbol:
-                stack.pop()
-                index_token += 1
-                symbol = tokens[index_token]
-                if symbol == "EOS":
+        if symbol in terminals or symbol in non_terminals:
+            if top in terminals:
+                print('TOP adalah symbol terminal')
+                if top == symbol:
                     stack.pop()
-                    print('isi stack:', stack)
-            else:
-                print('ERROR')
-                break
-        elif top in non_terminals:
-            print('TOP adalah simbol non-terminal')
-            if parse_table[(top, symbol)][0] != 'error':
-                stack.pop()
-                symbol_to_be_pushed = parse_table[(top, symbol)]
-                for i in range(len(symbol_to_be_pushed)-1, -1, -1):
-                    stack.append(symbol_to_be_pushed[i])
+                    index_token += 1
+                    symbol = tokens[index_token]
+                    if symbol == "EOS":
+                        print('isi stack:', stack)
+                        stack.pop()
+                        
+                else:
+                    print('ERROR')
+                    break
+            elif top in non_terminals:
+                print('TOP adalah symbol non-terminal')
+                if parse_table[(top, symbol)][0] != 'error':
+                    stack.pop()
+                    symbol_to_be_pushed = parse_table[(top, symbol)]
+                    for i in range(len(symbol_to_be_pushed)-1, -1, -1):
+                        stack.append(symbol_to_be_pushed[i])
+                else:
+                    print('ERROR')
+                    break
             else:
                 print('ERROR')
                 break
@@ -165,8 +166,9 @@ def parser(input_string):
     print()
     
     if symbol == 'EOS' and len(stack) == 0:
-        result = 'Dapat diterima karena sesuai Grammar'
+        result = '\n-------------------------------\nDITERIMA KARENA SESUAI GRAMMAR\n-------------------------------'
     else:
-        result = 'Tidak dapat diterima karena tidak sesuai Grammar'
+        result = '\n-------------------------------------------\nTIDAK DITERIMA KARENA TIDAK SESUAI GRAMMAR\n-------------------------------------------'
+
 
     return result
